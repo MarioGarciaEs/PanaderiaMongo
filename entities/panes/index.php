@@ -39,7 +39,7 @@
 
           <?php 
             if(isset($_GET['timeadd'])) {
-              echo "<div class='alert alert-success'>El registro se guardo en {$_GET['timeadd']} microsegundos</div>";
+              echo "<div class='alert alert-success'>El registro se guardo en {$_GET['timeadd']} segundos</div>";
             }
           ?>
           
@@ -67,11 +67,11 @@
         <div class="col">
           <?php 
             if(isset($_GET['timedelete'])) {
-              echo "<div class='alert alert-success'>El registro se eliminó en {$_GET['timedelete']} microsegundos</div>";
+              echo "<div class='alert alert-success'>El registro se eliminó en {$_GET['timedelete']} segundos</div>";
             }
 
             if(isset($_GET['timeupdate'])) {
-              echo "<div class='alert alert-success'>El registro se actualizó en {$_GET['timeupdate']} microsegundos</div>";
+              echo "<div class='alert alert-success'>El registro se actualizó en {$_GET['timeupdate']} segundos</div>";
             }
           ?>
           <table class="table text-center">
@@ -84,7 +84,15 @@
             </thead>
             <tbody>
               <?php
+                $start = microtime(true);
                 $panes = Panes::getAll();
+                $end = microtime(true);
+                $duration = $end - $start;
+                $duration = $duration / (1e+6);
+                $duration = number_format($duration, 11);
+
+                echo "<div class='alert alert-success'>La consulta tardo {$duration} segundos</div>";
+
                 foreach($panes as $pan) {
                   echo "
                   <tr>

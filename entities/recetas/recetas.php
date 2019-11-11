@@ -3,11 +3,12 @@
 
   class Recetas {
 
-    public static function insert($nombre, $descripcion) {
+    public static function insert($nombre, $descripcion, $preparacion) {
       MongoDatabase::getInstance()->panaderia->recetas->insertOne([
         '_id' => self::getNextSequence('recetasid'),
         'nombre' => $nombre,
-        'descripcion' => $descripcion
+        'descripcion' => $descripcion,
+        'preparacion' => $preparacion
       ]);
     }
 
@@ -19,10 +20,10 @@
       return MongoDatabase::getInstance()->panaderia->recetas->findOne(['_id' => (int) $id]);
     }
 
-    public static function updateOne($id, $nombre, $descripcion) {
+    public static function updateOne($id, $nombre, $descripcion, $preparacion) {
       MongoDatabase::getInstance()->panaderia->recetas->updateOne(
         ['_id' => (int) $id],
-        ['$set' => ['nombre' => $nombre, 'descripcion' => $descripcion]]
+        ['$set' => ['nombre' => $nombre, 'descripcion' => $descripcion, 'preparacion' => $preparacion]]
       );
     }
 

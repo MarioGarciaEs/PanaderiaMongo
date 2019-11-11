@@ -3,8 +3,8 @@
 
   class InventarioPan {
 
-    public static function insert($piezas, $pan_id) {
-      $fecha = (new DateTime(null, new DateTimeZone('America/Mexico_City')))->format('Y-m-d');
+    public static function insert($piezas, $pan_id, $fecha) {
+      //$fecha = (new DateTime(null, new DateTimeZone('America/Mexico_City')))->format('Y-m-d');
 
       MongoDatabase::getInstance()->panaderia->inventariopan->insertOne([
         '_id' => self::getNextSequence('inventariopanid'),

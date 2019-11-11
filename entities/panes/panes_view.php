@@ -2,7 +2,13 @@
   include_once "panes.php";
   include_once "../recetas/recetas.php";
   
+  $start = microtime(true);
   $pan = Panes::getById($_GET['id']);
+  $end = microtime(true);
+  $duration = $end - $start;
+  $duration = $duration / (1e+6);
+  $duration = number_format($duration, 11);
+  
 ?>
 
 <!DOCTYPE html>
@@ -37,8 +43,8 @@
     <div class="container mt-5">
       <div class="row mb-5">
         <div class="col">
+          <div class="alert alert-success">La consulta tardo <?php echo $duration; ?> segundos</div>
           <h2 class="mb-3">Actualizar Pan</h2>
-          
           <form method="post" action="panes_update.php">
             <input type="hidden" name="id" value="<?php echo $pan->_id; ?>">
             <div class="form-group">

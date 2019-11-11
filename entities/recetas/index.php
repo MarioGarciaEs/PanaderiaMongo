@@ -31,14 +31,14 @@
         </ul>
       </div>
     </nav>
-    <div class="container mt-5">
-      <div class="row mb-5">
-        <div class="col">
+    <div class="m-5">
+      <div class="row mb-5 justify-content-md-center">
+        <div class="col-6">
           <h2 class="mb-3">Agregar nueva receta</h2>
 
           <?php 
             if(isset($_GET['timeadd'])) {
-              echo "<div class='alert alert-success'>El registro se guardo en {$_GET['timeadd']} microsegundos</div>";
+              echo "<div class='alert alert-success'>El registro se guardo en {$_GET['timeadd']} segundos</div>";
             }
           ?>
           
@@ -51,6 +51,10 @@
               <label for="descripcion">Descripción</label>
               <input type="text" id="descripcion" class="form-control" name="descripcion" placeholder="Descripción">
             </div>
+            <div class="form-group">
+              <label for="preparacion">Preparación</label>
+              <textarea id="preparacion" class="form-control" name="preparacion" rows="4" maxlength="255">Ingresa la preparación de la receta</textarea>
+            </div>
             <input type="submit" class="btn btn-success form-control" value="Guardar">
           </form>
         </div>
@@ -59,11 +63,11 @@
         <div class="col">
           <?php 
             if(isset($_GET['timedelete'])) {
-              echo "<div class='alert alert-success'>El registro se eliminó en {$_GET['timedelete']} microsegundos</div>";
+              echo "<div class='alert alert-success'>El registro se eliminó en {$_GET['timedelete']} segundos</div>";
             }
 
             if(isset($_GET['timeupdate'])) {
-              echo "<div class='alert alert-success'>El registro se actualizó en {$_GET['timeupdate']} microsegundos</div>";
+              echo "<div class='alert alert-success'>El registro se actualizó en {$_GET['timeupdate']} segundos</div>";
             }
           ?>
           <table class="table text-center">
@@ -72,18 +76,28 @@
                 <th scope="col">Id</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Descripcion</th>
+                <th scope="col">Preparación</th>
               </tr>
             </thead>
             <tbody>
               <?php
+                $start = microtime(true);
                 $recetas = Recetas::getAll();
+                $end = microtime(true);
+                $duration = $end - $start;
+                $duration = $duration / (1e+6);
+                $duration = number_format($duration, 11);
+
+                echo "<div class='alert alert-success'>La consulta tardo {$duration} segundos</div>";
+
                 foreach($recetas as $receta) {
                   echo "
                   <tr>
                     <td> {$receta->_id} </td>
                     <td> {$receta->nombre} </td>
                     <td> {$receta->descripcion} </td>
-                    <td> 
+                    <td> {$receta->preparacion} </td>
+                    <td>
                       <a href='recetas_view.php?id={$receta->_id}' class='btn btn-primary'>Actualizar</a>
                       <a href='recetas_delete.php?id={$receta->_id}' class='btn btn-danger'>Eliminar</a>
                     </td>

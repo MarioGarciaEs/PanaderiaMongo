@@ -39,12 +39,20 @@
 
           <?php 
             if(isset($_GET['timeadd'])) {
-              echo "<div class='alert alert-success'>El registro se guardo en {$_GET['timeadd']} microsegundos</div>";
+              echo "<div class='alert alert-success'>El registro se guardo en {$_GET['timeadd']} segundos</div>";
             }
           ?>
           
           <form method="post" action="inventariopan_add.php">
             <div class="form-group">
+              <div class="form-group">
+                <label for="piezas">Piezas: </label>
+                <input type="text" id="piezas" class="form-control" name="piezas" placeholder="Piezas horneadas del pan">
+              </div>
+              <div class="form-group">
+                <label for="fecha">Fecha: </label>
+                <input type="date" id="fecha" class="form-control" name="fecha">
+              </div>
               <label for="pan">Pan: </label>
               <select id="pan" name="pan_id" class="form-control">
                 <?php 
@@ -55,10 +63,7 @@
                 ?>
               </select>
             </div>
-            <div class="form-group">
-              <label for="piezas">Piezas: </label>
-              <input type="text" id="piezas" class="form-control" name="piezas" placeholder="Piezas horneadas del pan">
-            </div>
+ 
             <input type="submit" class="btn btn-success form-control" value="Guardar">
           </form>
         </div>
@@ -67,32 +72,40 @@
         <div class="col">
           <?php 
             if(isset($_GET['timedelete'])) {
-              echo "<div class='alert alert-success'>El registro se eliminó en {$_GET['timedelete']} microsegundos</div>";
+              echo "<div class='alert alert-success'>El registro se eliminó en {$_GET['timedelete']} segundos</div>";
             }
 
             if(isset($_GET['timeupdate'])) {
-              echo "<div class='alert alert-success'>El registro se actualizó en {$_GET['timeupdate']} microsegundos</div>";
+              echo "<div class='alert alert-success'>El registro se actualizó en {$_GET['timeupdate']} segundos</div>";
             }
           ?>
           <table class="table text-center">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Id</th>
+                <th scope="col">Piezas</th>
                 <th scope="col">Fecha</th>
                 <th scope="col">Pan</th>
-                <th scope="col">Piezas</th>
               </tr>
             </thead>
             <tbody>
               <?php
+                $start = microtime(true);
                 $inventariosPan = InventarioPan::getAll();
+                $end = microtime(true);
+                $duration = $end - $start;
+                $duration = $duration / (1e+6);
+                $duration = number_format($duration, 11);
+
+                echo "<div class='alert alert-success'>La consulta tardo {$duration} segundos</div>";
+                
                 foreach($inventariosPan as $inventarioPan) {
                   echo "
                   <tr>
                     <td> {$inventarioPan->_id} </td>
+                    <td> {$inventarioPan->piezas} </td>
                     <td> {$inventarioPan->fecha} </td>
                     <td> {$inventarioPan->pan_id} </td>
-                    <td> {$inventarioPan->piezas} </td>
                     <td> 
                       <a href='inventariopan_view.php?id={$inventarioPan->_id}' class='btn btn-primary'>Actualizar</a>
                       <a href='inventariopan_delete.php?id={$inventarioPan->_id}' class='btn btn-danger'>Eliminar</a>

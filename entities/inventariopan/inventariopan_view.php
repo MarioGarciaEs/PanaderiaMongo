@@ -2,7 +2,13 @@
   include_once "inventariopan.php";
   include_once "../panes/panes.php";
 
+  $start = microtime(true);
   $inventarioPan = InventarioPan::getById($_GET['id']);
+  $end = microtime(true);
+  $duration = $end - $start;
+  $duration = $duration / (1e+6);
+  $duration = number_format($duration, 11);
+  
 ?>
 
 <!DOCTYPE html>
@@ -37,6 +43,7 @@
     <div class="container mt-5">
       <div class="row mb-5">
         <div class="col">
+          <div class="alert alert-success">La consulta tardo <?php echo $duration; ?> segundos</div>
           <h2 class="mb-3">Actualizar inventario pan</h2>
           <form method="post" action="inventariopan_update.php">
             <input type="hidden" name="id" value="<?php echo $inventarioPan->_id; ?>">

@@ -1,6 +1,12 @@
 <?php
   include_once "recetas.php";
+  $start = microtime(true);
   $receta = Recetas::getById($_GET['id']);
+  $end = microtime(true);
+  $duration = $end - $start;
+  $duration = $duration / (1e+6);
+  $duration = number_format($duration, 11);
+  
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +41,7 @@
     <div class="container mt-5">
       <div class="row mb-5">
         <div class="col">
+          <div class="alert alert-success">La consulta tardo <?php echo $duration; ?> segundos</div>
           <h2 class="mb-3">Actualizar receta</h2>
           
           <form method="post" action="recetas_update.php">
@@ -48,6 +55,11 @@
               <label for="descripcion">Descripción</label>
               <input type="text" id="descripcion" class="form-control" name="descripcion" placeholder="Descripción"
                 value="<?php echo $receta->descripcion; ?>">
+            </div>
+            <div class="form-group">
+              <label for="preparacion">Preparación</label>
+              <textarea id="preparacion" class="form-control" name="preparacion" rows="4" maxlength="255" 
+                placeholder="Ingresa la preparación de la receta"><?php echo $receta->preparacion; ?></textarea> 
             </div>
             <div class="d-flex justify-content-between">
               <a href="index.php" class="btn btn-danger form-control col-5">Cancelar</a>
